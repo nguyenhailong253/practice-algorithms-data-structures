@@ -1,3 +1,7 @@
+/**
+ * 3 Solutions that I attempted, the last one is the most optimal
+ */
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +14,7 @@ import java.util.Map;
  * Moving static size window: while loop takes O(n), java substring takes O(k)
  * and the loop inside isAnagram() is O(k) => O(k^2)
  * 
- * O(1) space an array of constant length (26) is used
+ * O(1) space an array of constant length (128) is used
  */
 
 class Solution {
@@ -39,7 +43,7 @@ class Solution {
     }
 
     private boolean isAnagram(String p, String substring) {
-        int[] counts = new int[26]; // 26 English characters
+        int[] counts = new int[128];
 
         for (int i = 0; i < p.length(); i++) {
             counts[p.charAt(i) - 'a']++;
@@ -140,7 +144,7 @@ class Solution {
  * 
  * While loop takes O(n) time
  * 
- * O(1) space - constant (26 english letters), given p of any length
+ * O(1) space - constant (128), given p of any length
  */
 
 class Solution {
@@ -151,9 +155,9 @@ class Solution {
             return result;
 
         // Use array instead of hash map, use char itself as index
-        int[] targetCharactersFreq = new int[26]; // 26 English characters
+        int[] targetCharactersFreq = new int[128];
 
-        // Populate the array above
+        // Populate the array above with char and its frequency in p (not s)
         for (char targetChar : p.toCharArray()) {
             targetCharactersFreq[targetChar]++;
         }
@@ -165,10 +169,17 @@ class Solution {
         while (endWindowIndex < s.length()) {
             char currentChar = s.charAt(endWindowIndex);
 
+            // If frequency of this char, which we grab from s, still have more
+            // occurence left (>=1) based on the array populated with p,
+            // Then as we slide the window, we cover that char. Decrement the
+            // number of remaining char to be anagram
             if (targetCharactersFreq[currentChar] >= 1) {
                 remainingCharToBeAnagram--;
             }
 
+            // As the char is covered by window, decrement its count
+            // If char does not exist in p, it will reach -1, to distinguish from
+            // char that does.
             targetCharactersFreq[currentChar]--;
             endWindowIndex++;
 
@@ -178,9 +189,14 @@ class Solution {
 
             int windowLength = endWindowIndex - startWindowIndex;
 
+            // If the window size matches p
             if (windowLength == p.length()) {
                 char currentStartWindowChar = s.charAt(startWindowIndex);
 
+                // If the freq of the char at start index is >= 0, or not -1,
+                // meaning initially it exists in p, hence as we move the start
+                // pointer forward, that will not be in the window anymore.
+                // We are adding its freq back
                 if (targetCharactersFreq[currentStartWindowChar] >= 0) {
                     remainingCharToBeAnagram++;
                 }

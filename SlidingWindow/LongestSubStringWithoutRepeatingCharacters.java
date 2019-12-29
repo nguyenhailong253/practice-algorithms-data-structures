@@ -1,3 +1,8 @@
+
+/**
+ * The last solution is the most optimal one
+ */
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -95,6 +100,8 @@ class Solution {
         int startWindowIdx = 0;
 
         for (int endWindowIdx = 0; endWindowIdx < s.length(); endWindowIdx++) {
+            // If the character has not been seen (or reached by the end pointer),
+            // its default last seen index will be 0, then start window will stay at 0
             startWindowIdx = Math.max(startWindowIdx, characterIndex[s.charAt(endWindowIdx)]);
 
             maxSubstringLength = Math.max(endWindowIdx - startWindowIdx + 1, maxSubstringLength);
