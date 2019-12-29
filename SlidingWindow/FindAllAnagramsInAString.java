@@ -140,7 +140,7 @@ class Solution {
  * 
  * While loop takes O(n) time
  * 
- * O(1) space - constant 256 given p of any length
+ * O(1) space - constant (26 english letters), given p of any length
  */
 
 class Solution {
