@@ -11,6 +11,7 @@ class Solution {
         // setting up windows data
         int[] charFrequency = new int[26]; // A-Z
 
+        // Counter of the char that appears the most in current window frame
         int mostCommonCharCount = 0;
 
         int startWindowIdx = 0;
@@ -22,15 +23,13 @@ class Solution {
             charFrequency[lastCharInWindow - 'A']++;
             mostCommonCharCount = Math.max(mostCommonCharCount, charFrequency[lastCharInWindow - 'A']);
 
-            // condition when to shrink window
+            // Condition when to shrink window
             while (endWindowIdx - startWindowIdx + 1 - mostCommonCharCount > k) {
-
                 charFrequency[s.charAt(startWindowIdx) - 'A']--;
                 startWindowIdx++;
             }
-
-            // can always update this because the while before makes sure we are in a valid
-            // window
+            // can always update this because the while before makes sure we
+            // are in a valid window
             maxSubstringLength = Math.max(maxSubstringLength, endWindowIdx - startWindowIdx + 1);
             endWindowIdx++;
         }
