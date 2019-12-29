@@ -5,49 +5,53 @@ import java.util.Map;
 
 /**
  * O(n*k^2) solution where n is the number of characters in s k is the number of
- * characters in p
+ * characters in p.
  * 
- * Moving static size window - while loop takes O(n) - java substring takes O(k)
- * and the loop inside anagram is O(k) => O(k^2)
+ * Moving static size window: while loop takes O(n), java substring takes O(k)
+ * and the loop inside isAnagram() is O(k) => O(k^2)
  * 
- * O(1) space
+ * O(1) space an array of constant length (26) is used
  */
 
 class Solution {
     public List<Integer> findAnagrams(String s, String p) {
         List<Integer> result = new ArrayList<>();
 
+        // If p's length is more than s, then there's no anagram in s. Return empty list
         if (s.length() < p.length())
             return result;
 
+        // Create the window, with starting point at index 0 and length = p.length()
         int startWindowIndex = 0;
         int endWindowIndex = startWindowIndex + p.length();
 
+        // "<=" because java's substring(start, end) return characters of the string
+        // from start index to end index - 1
         while (endWindowIndex <= s.length()) {
             if (isAnagram(p, s.substring(startWindowIndex, endWindowIndex))) {
                 result.add(startWindowIndex);
             }
-
+            // Slide the window
             startWindowIndex++;
             endWindowIndex++;
         }
-
         return result;
     }
 
     private boolean isAnagram(String p, String substring) {
-        int[] counts = new int[26];
+        int[] counts = new int[26]; // 26 English characters
 
         for (int i = 0; i < p.length(); i++) {
             counts[p.charAt(i) - 'a']++;
             counts[substring.charAt(i) - 'a']--;
         }
 
+        // If substring is anagram of p then count for each character should be
+        // even out from previous loop.
         for (int count : counts) {
             if (count != 0)
                 return false;
         }
-
         return true;
     }
 }
@@ -56,7 +60,7 @@ class Solution {
  * O(n * k) solution where n is the number of characters in s k is the number of
  * characters in p
  * 
- * - outer while loop takes O(n) time - inner while loop takes O(k) time
+ * Outer while loop takes O(n) time - inner while loop takes O(k) time
  * 
  * O(k) space
  */
@@ -68,55 +72,65 @@ class Solution {
         if (s.length() < p.length())
             return result;
 
+        // Hash map storing character as key, and its frequency as value
         Map<Character, Integer> targetCharactersFreq = new HashMap<>();
 
+        // Populate hash map with characters and frequency in p
         for (char targetChar : p.toCharArray()) {
             int currentCharFrequency = targetCharactersFreq.getOrDefault(targetChar, 0);
             targetCharactersFreq.put(targetChar, currentCharFrequency + 1);
         }
 
         int remainingCharToBeAnagram = targetCharactersFreq.size();
-
         int startWindowIndex = 0;
         int endWindowIndex = 0;
 
         while (endWindowIndex < s.length()) {
-
             char currentChar = s.charAt(endWindowIndex);
 
+            // As window extends on the end pointer to cover the current character,
+            // if hash map contains current char from s, decrease its frequency
+            // to mark that the character is within the frame.
             if (targetCharactersFreq.containsKey(currentChar)) {
                 int currentCharFrequency = targetCharactersFreq.get(currentChar);
                 targetCharactersFreq.put(currentChar, currentCharFrequency - 1);
 
+                // If all appearances of the current character have been found,
+                // the number of characters left in anagram decreases.
                 currentCharFrequency = targetCharactersFreq.get(currentChar);
                 if (currentCharFrequency == 0) {
                     remainingCharToBeAnagram--;
                 }
             }
-
             endWindowIndex++;
 
+            // Condition to move the start index forward - found ONE of
+            // many anagrams
             while (remainingCharToBeAnagram == 0) {
+                // Get characters at START index
                 char startCharOfAnagram = s.charAt(startWindowIndex);
 
+                // Since we will be moving the start index forward, if the character
+                // exists in hash map, we add its frequency back
                 if (targetCharactersFreq.containsKey(startCharOfAnagram)) {
                     int startCharFreq = targetCharactersFreq.get(startCharOfAnagram);
                     targetCharactersFreq.put(startCharOfAnagram, startCharFreq + 1);
 
+                    // Add the char count to be anagram back, in order to
+                    // find another potential anagram
                     startCharFreq = targetCharactersFreq.get(startCharOfAnagram);
                     if (startCharFreq > 0) {
                         remainingCharToBeAnagram++;
                     }
                 }
 
+                // If the window length equals the anagram, record its start index
                 if (endWindowIndex - startWindowIndex == p.length()) {
                     result.add(startWindowIndex);
                 }
-
                 startWindowIndex++;
             }
         }
-
         return result;
     }
 }
@@ -124,7 +138,7 @@ class Solution {
 /**
  * O(n) solution where n is the number of characters in string s
  * 
- * - while loop takes O(n) time
+ * While loop takes O(n) time
  * 
  * O(1) space - constant 256 given p of any length
  */
@@ -136,24 +150,25 @@ class Solution {
         if (s.length() < p.length())
             return result;
 
-        int[] targetCharactersFreq = new int[256];
+        // Use array instead of hash map, use char itself as index
+        int[] targetCharactersFreq = new int[26]; // 26 English characters
 
+        // Populate the array above
         for (char targetChar : p.toCharArray()) {
             targetCharactersFreq[targetChar]++;
         }
 
         int remainingCharToBeAnagram = p.length();
-
         int startWindowIndex = 0;
         int endWindowIndex = 0;
 
         while (endWindowIndex < s.length()) {
-
             char currentChar = s.charAt(endWindowIndex);
 
             if (targetCharactersFreq[currentChar] >= 1) {
                 remainingCharToBeAnagram--;
             }
+
             targetCharactersFreq[currentChar]--;
             endWindowIndex++;
 
@@ -169,12 +184,10 @@ class Solution {
                 if (targetCharactersFreq[currentStartWindowChar] >= 0) {
                     remainingCharToBeAnagram++;
                 }
-
                 targetCharactersFreq[currentStartWindowChar]++;
                 startWindowIndex++;
             }
         }
-
         return result;
     }
 }
