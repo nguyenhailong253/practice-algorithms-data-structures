@@ -1,3 +1,4 @@
+// Technique: cummulative sum
 /**
  * O(n^2) time & O(1) space complexity
  */
@@ -26,6 +27,10 @@ class Solution {
 
 /**
  * O(n) time & space complexity
+ * 
+ * Explanation:
+ * leetcode.com/articles/subarray-sum-equals-k/127728/Subarray-Sum-Equals-K/154485
+ * leetcode.com/articles/subarray-sum-equals-k/127728/Subarray-Sum-Equals-K/260568
  */
 
 class Solution {
@@ -35,7 +40,8 @@ class Solution {
 
         int sumUpFromStartToCurrentIndex = 0;
         Map<Integer, Integer> map = new HashMap<>();
-        map.put(0, 1);
+        map.put(0, 1); // why:
+                       // leetcode.com/articles/subarray-sum-equals-k/127728/Subarray-Sum-Equals-K/287402
 
         for (int i = 0; i < nums.length; i++) {
             sumUpFromStartToCurrentIndex += nums[i];
