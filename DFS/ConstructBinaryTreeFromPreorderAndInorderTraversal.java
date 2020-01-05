@@ -70,7 +70,7 @@ class Solution {
 }
 
 /**
- * O(n) time & O(n + logn) = O(n) space complexity
+ * Iterative solution - O(n) time & O(n + logn) = O(n) space complexity
  */
 
 class Solution {
