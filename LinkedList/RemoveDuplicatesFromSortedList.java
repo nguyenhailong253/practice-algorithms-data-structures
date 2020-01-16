@@ -1,11 +1,19 @@
 /**
  * O(n) time with n = number of nodes, O(1) space
+ * 
+ * Source:
+ * https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/discuss/28335/My-accepted-Java-code
  */
 
-/**
- * Definition for singly-linked list. public class ListNode { int val; ListNode
- * next; ListNode(int x) { val = x; } }
- */
+public class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode(int x) {
+        val = x;
+    }
+}
+
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
 
@@ -21,7 +29,7 @@ class Solution {
             while (endPointer.next != null && endPointer.val == endPointer.next.val)
                 endPointer = endPointer.next;
 
-            // If they are pointing to the same thing, then the while loop above has not
+            // If they are not pointing to the same thing, then the while loop above has not
             // occurred,
             // meaning there has been no duplication yet, hence move both pointers
             /**

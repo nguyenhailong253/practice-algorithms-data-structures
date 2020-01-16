@@ -82,6 +82,8 @@ class Solution {
 
 /**
  * A more neat solution, same complexity
+ * 
+ * Source: https://leetcode.com/articles/odd-even-linked-list/
  */
 
 class Solution {

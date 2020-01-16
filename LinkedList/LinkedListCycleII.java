@@ -8,19 +8,17 @@ public class Solution {
             return null;
 
         // Create a hashmap with key = node, value = its index in list
-        Map<ListNode, Integer> map = new HashMap<>();
+        Set<ListNode> set = new HashSet<>();
 
         ListNode pointer = head;
-        int nodeIndex = 0;
 
         while (pointer != null) {
             // If pointer exists in map, we have encountered it before
             // hence, a cycle is there, return that node
-            if (map.containsKey(pointer))
+            if (set.contains(pointer))
                 return pointer;
 
-            map.put(pointer, nodeIndex);
-            nodeIndex++;
+            set.add(pointer);
             pointer = pointer.next;
         }
         return null;
@@ -29,6 +27,9 @@ public class Solution {
 
 /**
  * O(n) time & O(1) space
+ * 
+ * Source:
+ * https://leetcode.com/problems/linked-list-cycle-ii/discuss/44774/Java-O(1)-space-solution-with-detailed-explanation.
  */
 
 public class Solution {
