@@ -31,8 +31,8 @@ class Solution {
              * means that the subarray at that item, ends at itself. That is the best value
              * (that single value) in this 1-element subarray. "The best I can do ending
              * here, is myself". If the current one by itself is bigger (could do more good
-             * on its own) than adding itself to the previous sum, then start a new subarray
-             * at itself
+             * on its own) than adding itself to the previous sum - that would not be the
+             * subarray that we are looking for, then start a new subarray at itself
              * 
              * - Option 2: Can we continue the max subarray coming before us by extending to
              * the current element? When we are at (i-1)th, does i-th extends our max value
